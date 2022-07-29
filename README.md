@@ -5,7 +5,6 @@ A very simple package to translate single words and phrases between different la
 [![PyPI Version][pypi-image]][pypi-url]
 [![Build Status][build-image]][build-url]
 [![Code Coverage][coverage-image]][coverage-url]
-[![][stars-image]][stars-url]
 [![][versions-image]][versions-url]
 
 ...
