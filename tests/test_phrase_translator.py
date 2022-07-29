@@ -1,7 +1,10 @@
 import os
 
 from phrase_translator import __version__
-from phrase_translator.dictionary_sources import FileDictionarySource
+from phrase_translator.dictionary_sources import (
+    FileDictionarySource,
+    WikiExtractDictionarySource,
+)
 from phrase_translator.phrase_translator import PhraseTranslator
 from phrase_translator.types import Language, Translation
 
@@ -32,4 +35,11 @@ def test_file_dictionary_source():
     assert len(translations) == 1
     assert translations[0] == Translation(
         "Test", "test", source_language, target_language
+    )
+
+
+def test_wiki_dictionary_source():
+    pt = PhraseTranslator()
+    wds = WikiExtractDictionarySource(
+        ["tests/resources/test_dump.json"], use_cached=False
     )
