@@ -1,2 +1,5 @@
 dist
 .idea
+.tox
+tests/__pycache__
+phrase_translator/__pycache__

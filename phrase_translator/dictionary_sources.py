@@ -1,3 +1,5 @@
+"""A default collection of DictionarySources."""
+
 from collections import defaultdict
 
 from phrase_translator.phrase_translator import DictionarySource
@@ -5,6 +7,7 @@ from phrase_translator.types import Language, Translation
 
 
 class FileDictionarySource(DictionarySource):
+    """A simple dictionary source for reading from .dict files."""
 
     SEPARATOR: str = " -> "
     COMMENT: str = "#"
@@ -17,6 +20,7 @@ class FileDictionarySource(DictionarySource):
         self.__load_files()
 
     def __raise_syntax_error(self, index: int, line: str):
+        """Raises .dict Syntax Error."""
         raise SyntaxError("Malformed Translation on line " + str(index) + ": " + line)
 
     def __load_files(self) -> None:
