@@ -1,0 +1,6 @@
+lang: de -> en
+Test -> test
+Versuch -> trial
+
+lang: en -> de
+test -> Test

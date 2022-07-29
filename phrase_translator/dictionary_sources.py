@@ -21,7 +21,9 @@ class FileDictionarySource(DictionarySource):
 
     def __raise_syntax_error(self, index: int, line: str):
         """Raises .dict Syntax Error."""
-        raise SyntaxError("Malformed Translation on line " + str(index) + ": " + line)
+        raise SyntaxError(
+            "Malformed Translation on line " + str(index + 1) + ": " + line
+        )
 
     def __load_files(self) -> None:
         for dictionary_path in self.__dictionary_files:
@@ -30,6 +32,11 @@ class FileDictionarySource(DictionarySource):
                 target_language = Language.UNKNOWN
 
                 for index, line in enumerate(dictionary_file):
+                    line = line.replace("\n", "")
+
+                    if not line:
+                        continue
+
                     if line.startswith(self.COMMENT):
                         continue
 
@@ -44,7 +51,6 @@ class FileDictionarySource(DictionarySource):
                         source_language = Language(lang_splits[0])
                         target_language = Language(lang_splits[1])
 
-                    line = line.replace("\n", "")
                     splits = line.split(self.SEPARATOR)
 
                     if len(splits) != 2:
