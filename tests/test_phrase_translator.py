@@ -1,3 +1,5 @@
+import os
+
 from phrase_translator import __version__
 from phrase_translator.dictionary_sources import FileDictionarySource
 from phrase_translator.phrase_translator import PhraseTranslator
@@ -23,7 +25,7 @@ def test_phrase_translator_init():
 def test_file_dictionary_source():
     pt = PhraseTranslator()
 
-    fds = FileDictionarySource(["resources/test.dict"])
+    fds = FileDictionarySource(["tests/resources/test.dict"])
     pt.add_dictionary_source(fds)
 
     translations = fds.get_translations("Test")

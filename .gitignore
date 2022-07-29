@@ -2,5 +2,6 @@ dist
 .idea
 .tox
 .coverage
+coverage.xml
 tests/__pycache__
 phrase_translator/__pycache__
