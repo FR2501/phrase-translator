@@ -4,7 +4,6 @@ A very simple package to translate single words and phrases between different la
 
 [![PyPI Version][pypi-image]][pypi-url]
 [![Build Status][build-image]][build-url]
-[![Code Coverage][coverage-image]][coverage-url]
 [![][versions-image]][versions-url]
 
 ...
@@ -15,7 +14,5 @@ A very simple package to translate single words and phrases between different la
 [pypi-url]: https://pypi.org/project/phrase-translator/
 [build-image]: https://github.com/fr2501/phrase-translator/actions/workflows/build.yaml/badge.svg
 [build-url]: https://github.com/fr2501/phrase-translator/actions/workflows/build.yaml
-[coverage-image]: https://codecov.io/gh/fr2501/phrase-translator/branch/main/graph/badge.svg
-[coverage-url]: https://codecov.io/gh/fr2501/phrase-translator/
 [versions-image]: https://img.shields.io/pypi/pyversions/phrase-translator/
 [versions-url]: https://pypi.org/project/phrase-translator/
