@@ -1,6 +1,7 @@
 """The most important classes for interacting with phrase-translator."""
 
 from abc import ABC, abstractmethod
+from typing import List, Set
 
 from phrase_translator.types import Language, Translation
 
@@ -13,7 +14,7 @@ class DictionarySource(ABC):
         phrase: str,
         source_language: Language = None,
         target_language: Language = None,
-    ) -> [Translation]:
+    ) -> List[Translation]:
         """Returns all translations for a given string that satisfy source
         and target language requirements."""
 
@@ -31,7 +32,7 @@ class DictionarySource(ABC):
         return results
 
     @abstractmethod
-    def _provide_translations(self, phrase: str) -> [Translation]:
+    def _provide_translations(self, phrase: str) -> List[Translation]:
         pass
 
 
@@ -42,7 +43,7 @@ class PhraseTranslator:
     def __init__(
         self, source_language: Language = None, target_language: Language = None
     ) -> None:
-        self.__dictionary_sources: set[DictionarySource] = set()
+        self.__dictionary_sources: Set[DictionarySource] = set()
 
         self.__source_language = source_language
         self.__target_language = target_language
@@ -52,7 +53,7 @@ class PhraseTranslator:
 
         self.__dictionary_sources.add(dictionary_source)
 
-    def translate_phrase(self, phrase: str) -> [Translation]:
+    def translate_phrase(self, phrase: str) -> List[Translation]:
         """Translate a single phrase by querying all registered dictionaries."""
 
         results = []
@@ -64,9 +65,9 @@ class PhraseTranslator:
 
         return results
 
-    def translate_phrases(self, phrases: [str]) -> [[Translation]]:
+    def translate_phrases(self, phrases: List[str]) -> List[List[Translation]]:
         """Translates a list of phrases, calls self.translate_phrase() for each."""
-        results = [[]]
+        results: List[List[Translation]] = [[]]
 
         for phrase in phrases:
             results.append(self.translate_phrase(phrase))

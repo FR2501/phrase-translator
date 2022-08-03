@@ -4,12 +4,12 @@ A very simple package to translate single words and phrases between different la
 
 [![PyPI Version][pypi-image]][pypi-url]
 [![Build Status][build-image]][build-url]
-[![][versions-image]][versions-url]
+[![Versions][versions-image]][versions-url]
 
 ...
 
 <!-- Badges: -->
-
+poet
 [pypi-image]: https://img.shields.io/pypi/v/phrase-translator
 [pypi-url]: https://pypi.org/project/phrase-translator/
 [build-image]: https://github.com/fr2501/phrase-translator/actions/workflows/build.yaml/badge.svg

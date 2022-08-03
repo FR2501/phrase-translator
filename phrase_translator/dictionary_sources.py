@@ -3,6 +3,7 @@ import json
 from collections import defaultdict
 from os import remove
 from os.path import exists
+from typing import Dict, List
 
 from phrase_translator.phrase_translator import DictionarySource
 from phrase_translator.types import Language, Translation
@@ -15,9 +16,9 @@ class FileDictionarySource(DictionarySource):
     COMMENT: str = "#"
     LANGUAGE_INDICATOR = "lang: "
 
-    def __init__(self, dictionary_files: [str]) -> None:
-        self.__dictionary_files: [str] = dictionary_files
-        self.__translations: {str: [Translation]} = defaultdict(list)
+    def __init__(self, dictionary_files: List[str]) -> None:
+        self.__dictionary_files: List[str] = dictionary_files
+        self.__translations: Dict[str, List[Translation]] = defaultdict(list)
 
         self.__load_files()
 
@@ -64,7 +65,7 @@ class FileDictionarySource(DictionarySource):
                         )
                     )
 
-    def _provide_translations(self, phrase: str) -> [Translation]:
+    def _provide_translations(self, phrase: str) -> List[Translation]:
         return self.__translations[phrase]
 
 
@@ -75,14 +76,14 @@ class WikiExtractDictionarySource(DictionarySource):
     DUMP_SUFFIX = ".json"
     CACHE_SUFFIX = "_cached.dict"
 
-    def __init__(self, dump_paths: [str], use_cached: bool = True) -> None:
-        self.__dump_paths: [str] = dump_paths
+    def __init__(self, dump_paths: List[str], use_cached: bool = True) -> None:
+        self.__dump_paths: List[str] = dump_paths
         self.__use_cached: bool = use_cached
 
         self.__load_files()
 
     def __load_files(self) -> None:
-        self.__file_dictionary_sources: [FileDictionarySource] = []
+        self.__file_dictionary_sources: List[FileDictionarySource] = []
 
         for path_string in self.__dump_paths:
             cache_path = path_string.replace(self.DUMP_SUFFIX, self.CACHE_SUFFIX)
@@ -95,7 +96,9 @@ class WikiExtractDictionarySource(DictionarySource):
         if not self.__use_cached and exists(cache_path):
             remove(cache_path)
 
-        with open(dump_path, "r") as dump_file, open(cache_path, "w+") as cache_file:
+        with open(dump_path, "r", encoding="utf-8") as dump_file, open(
+            cache_path, "w+", encoding="utf-8"
+        ) as cache_file:
             for line in dump_file:
                 data = json.loads(line)
 
@@ -112,8 +115,11 @@ class WikiExtractDictionarySource(DictionarySource):
                                     + "\n"
                                 )
 
-    def _provide_translations(self, phrase: str) -> [Translation]:
+    def _provide_translations(self, phrase: str) -> List[Translation]:
         results = []
 
         for fds in self.__file_dictionary_sources:
-            results.append(fds.get_translations(phrase))
+            for translation in fds.get_translations(phrase):
+                results.append(translation)
+
+        return results
