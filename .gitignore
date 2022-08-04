@@ -5,3 +5,5 @@ dist
 coverage.xml
 tests/__pycache__
 phrase_translator/__pycache__
+poetry.lock
+tests/resources/test_dump_cached.dict

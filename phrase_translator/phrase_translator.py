@@ -1,3 +1,5 @@
+# pylint: disable=R0903
+
 """The most important classes for interacting with phrase-translator."""
 
 from abc import ABC, abstractmethod
@@ -9,16 +11,16 @@ from phrase_translator.types import Language, Translation
 class DictionarySource(ABC):
     """Abstract Base Class for all different types of dictionary sources."""
 
-    def get_translations(
+    def translate_phrase(
         self,
         phrase: str,
         source_language: Language = None,
         target_language: Language = None,
-    ) -> List[Translation]:
+    ) -> Set[Translation]:
         """Returns all translations for a given string that satisfy source
         and target language requirements."""
 
-        results = []
+        results = set()
 
         for translation in self._provide_translations(phrase):
             if source_language and translation.get_source_lang() != source_language:
@@ -27,12 +29,12 @@ class DictionarySource(ABC):
             if target_language and translation.get_target_lang() != target_language:
                 continue
 
-            results.append(translation)
+            results.add(translation)
 
         return results
 
     @abstractmethod
-    def _provide_translations(self, phrase: str) -> List[Translation]:
+    def _provide_translations(self, phrase: str) -> Set[Translation]:
         pass
 
 
@@ -53,21 +55,23 @@ class PhraseTranslator:
 
         self.__dictionary_sources.add(dictionary_source)
 
-    def translate_phrase(self, phrase: str) -> List[Translation]:
+    def translate_phrase(self, phrase: str) -> Set[Translation]:
         """Translate a single phrase by querying all registered dictionaries."""
 
-        results = []
+        results: Set[Translation] = set()
 
         for dictionary_source in self.__dictionary_sources:
-            results += dictionary_source.get_translations(
-                phrase, self.__source_language, self.__target_language
+            results = results.union(
+                dictionary_source.translate_phrase(
+                    phrase, self.__source_language, self.__target_language
+                )
             )
 
         return results
 
-    def translate_phrases(self, phrases: List[str]) -> List[List[Translation]]:
+    def translate_phrases(self, phrases: List[str]) -> List[Set[Translation]]:
         """Translates a list of phrases, calls self.translate_phrase() for each."""
-        results: List[List[Translation]] = [[]]
+        results: List[Set[Translation]] = []
 
         for phrase in phrases:
             results.append(self.translate_phrase(phrase))

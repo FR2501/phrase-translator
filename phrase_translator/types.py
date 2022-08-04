@@ -16,6 +16,12 @@ class Language(str, Enum):
 
         return self.value == other.value
 
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(self.value)
+
 
 class Translation:
     """A wrapper object for a single translation.
@@ -49,6 +55,19 @@ class Translation:
             and self.__target_phrase == other.get_target_phrase()
             and self.__source_lang == other.get_source_lang()
             and self.__target_lang == other.get_target_lang()
+        )
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __hash__(self):
+        return hash(
+            (
+                self.__source_phrase,
+                self.__target_phrase,
+                self.__source_lang,
+                self.__target_lang,
+            )
         )
 
     def get_source_phrase(self) -> str:
