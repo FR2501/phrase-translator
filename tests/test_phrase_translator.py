@@ -54,10 +54,28 @@ def test_wiki_dictionary_source():
 
 
 def test_wordnet_dictionary_source():
-    pt = PhraseTranslator()
+    pt = PhraseTranslator(
+        source_language=Language("de"), target_language=Language("en")
+    )
 
     wds = WordnetDictionarySource()
     pt.add_dictionary_source(wds)
 
-    translations = pt.translate_phrase("Test")
+    translations = pt.translate_phrase("Experiment")
+    assert translations
+
+
+def test_combined():
+    pt = PhraseTranslator(
+        source_language=Language("en"), target_language=Language("de")
+    )
+
+    wn_ds = WordnetDictionarySource()
+    pt.add_dictionary_source(wn_ds)
+    wiki_ds = WikiExtractDictionarySource(
+        ["tests/resources/test_dump.json"], use_cached=False
+    )
+    pt.add_dictionary_source(wiki_ds)
+
+    translations = pt.translate_phrase("abased")
     assert translations

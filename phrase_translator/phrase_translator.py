@@ -23,10 +23,18 @@ class DictionarySource(ABC):
         results = set()
 
         for translation in self._provide_translations(phrase):
-            if source_language and translation.get_source_lang() != source_language:
+            if (
+                source_language
+                and translation.get_source_lang() != Language.UNKNOWN
+                and translation.get_source_lang() != source_language
+            ):
                 continue
 
-            if target_language and translation.get_target_lang() != target_language:
+            if (
+                target_language
+                and translation.get_target_lang() != Language.UNKNOWN
+                and translation.get_target_lang() != target_language
+            ):
                 continue
 
             results.add(translation)
