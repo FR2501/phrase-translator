@@ -1,5 +1,7 @@
 import os
 
+import wn  # type: ignore
+
 from phrase_translator import __version__
 from phrase_translator.dictionary_sources import (
     FileDictionarySource,

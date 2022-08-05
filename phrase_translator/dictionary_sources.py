@@ -134,6 +134,7 @@ class WordnetDictionarySource(DictionarySource):
     """A dictionary source based on multilingual wordnets"""
 
     def __init__(self, wordnets=None) -> None:
+
         if wordnets is None:
             wordnets = ["odenet:1.4", "oewn:2021", "omw:1.4", "cili:1.0"]
 
@@ -145,6 +146,8 @@ class WordnetDictionarySource(DictionarySource):
         invalid_ids = []
         for wordnet_id in self.__wordnet_ids:
             try:
+                wn.download(wordnet_id)
+
                 self.__wordnets.append(
                     wn.Wordnet(wordnet_id, expand=self.__expand_string)
                 )
@@ -153,12 +156,6 @@ class WordnetDictionarySource(DictionarySource):
 
         for id in invalid_ids:
             self.__wordnet_ids.remove(id)
-
-        self.__download_wordnets()
-
-    def __download_wordnets(self) -> None:
-        for wordnet_id in self.__wordnet_ids:
-            wn.download(wordnet_id)
 
     def _provide_translations(self, phrase: str) -> Set[Translation]:
         result: Set[Translation] = set()
